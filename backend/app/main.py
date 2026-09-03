@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.routers import products, users
+from app.routers import orders, products, users
 
 app = FastAPI(
     title="Neba Shop & Stock Management API",
@@ -21,6 +21,7 @@ app.add_middleware(
 # Register routers
 app.include_router(users.router)
 app.include_router(products.router)
+app.include_router(orders.router)
 
 
 @app.get("/health")
