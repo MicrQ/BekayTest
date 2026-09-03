@@ -369,7 +369,7 @@ export default function OrdersPage() {
                         Order Value
                       </span>
                       <span className="text-sm font-bold font-mono text-foreground">
-                        ${orderTotal.toFixed(2)}
+                        {orderTotal.toFixed(2)} ETB
                       </span>
                     </div>
 
@@ -433,10 +433,10 @@ export default function OrdersPage() {
                                 {line.quantity}
                               </td>
                               <td className="py-2.5 text-right text-muted-foreground">
-                                ${line.unit_price.toFixed(2)}
+                                {line.unit_price.toFixed(2)} ETB
                               </td>
                               <td className="py-2.5 text-right font-bold text-foreground">
-                                ${(line.quantity * line.unit_price).toFixed(2)}
+                                {(line.quantity * line.unit_price).toFixed(2)} ETB
                               </td>
                             </tr>
                           ))}

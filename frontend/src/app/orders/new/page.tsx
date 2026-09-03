@@ -343,7 +343,7 @@ export default function NewOrderPage() {
                             htmlFor={`unit-price-${index}`}
                             className="block text-[11px] font-semibold text-muted-foreground mb-1"
                           >
-                            Unit Price ($)
+                            Unit Price (ETB)
                           </label>
                           <input
                             id={`unit-price-${index}`}
@@ -369,7 +369,7 @@ export default function NewOrderPage() {
                             Line Total
                           </span>
                           <span className="block font-mono text-sm font-bold text-foreground py-1.5">
-                            ${evalData.subtotal.toFixed(2)}
+                            {evalData.subtotal.toFixed(2)} ETB
                           </span>
                         </div>
                       </div>
@@ -422,7 +422,7 @@ export default function NewOrderPage() {
               <div className="border-t border-border/80 pt-2 flex justify-between text-sm font-bold">
                 <span className="text-foreground">Estimated Total:</span>
                 <span className="text-primary text-base font-extrabold font-mono">
-                  ${orderTotal.toFixed(2)}
+                  {orderTotal.toFixed(2)} ETB
                 </span>
               </div>
             </div>

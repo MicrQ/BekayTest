@@ -30,7 +30,7 @@ def test_dashboard_auth_and_role_restrictions():
 
 
 def test_dashboard_revenue_and_status_aggregation():
-    # 1. Create Order 1 (remains pending: 2 @ $100 = $200)
+    # 1. Create Order 1 (remains pending: 2 @ 100 ETB = 200 ETB)
     res_o1 = client.post(
         "/orders",
         json={
@@ -41,7 +41,7 @@ def test_dashboard_revenue_and_status_aggregation():
     )
     oid1 = res_o1.json()["id"]
 
-    # 2. Create Order 2 (completed: 3 @ $50 = $150)
+    # 2. Create Order 2 (completed: 3 @ 50 ETB = 150 ETB)
     res_o2 = client.post(
         "/orders",
         json={
@@ -57,7 +57,7 @@ def test_dashboard_revenue_and_status_aggregation():
         headers={"X-User-ID": "u3"},
     )
 
-    # 3. Create Order 3 (cancelled: 4 @ $25 = $100)
+    # 3. Create Order 3 (cancelled: 4 @ 25 ETB = 100 ETB)
     res_o3 = client.post(
         "/orders",
         json={
@@ -82,5 +82,5 @@ def test_dashboard_revenue_and_status_aggregation():
     assert summary["orders_by_status"]["completed"] == 1
     assert summary["orders_by_status"]["cancelled"] == 1
 
-    # Revenue MUST strictly sum completed orders only ($150.00)
+    # Revenue MUST strictly sum completed orders only (150.00 ETB)
     assert summary["total_revenue"] == 150.00

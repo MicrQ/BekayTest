@@ -144,7 +144,8 @@ export default function DashboardPage() {
               <span>Realized Shop Revenue</span>
             </div>
             <div className="mt-2 text-4xl sm:text-5xl font-black font-mono tracking-tight text-foreground">
-              ${summary ? summary.total_revenue.toFixed(2) : "0.00"}
+              {summary ? summary.total_revenue.toFixed(2) : "0.00"}{" "}
+              <span className="text-2xl sm:text-3xl font-bold text-muted-foreground">ETB</span>
             </div>
             <p className="mt-2 text-xs text-muted-foreground max-w-lg leading-relaxed">
               Sum of completed customer orders <span className="font-mono font-semibold">(&Sigma; qty &times; unit_price)</span>. Unfulfilled pending orders and cancelled orders are excluded from realized revenue.
