@@ -117,37 +117,7 @@ BekayTest/
 
 ---
 
-## 5. Walkthrough Q&A Preparation
-
-### Q1: Why did you structure the data this way?
-> **Answer:** All 5 entities (`users`, `products`, `orders`, `order_lines`, `stock_movements`) live in separate flat dictionaries keyed by ID, mirroring normalized relational database tables with foreign key references. 
-> 
-> Keeping `order_lines` and `stock_movements` normalized rather than nesting them inside products or orders allows:
-> 1. An append-only ledger for `stock_movements` that survives order cancellations intact.
-> 2. Clean revenue aggregation across lines without mutating parent records.
-> 3. Zero refactoring required to swap the in-memory store for an SQL database (PostgreSQL / SQLite via SQLAlchemy).
-
-### Q2: What would break first if this had to handle 1,000 orders a day?
-> **Answer:** 
-> 1. **Concurrency / Race Conditions:** With in-memory Python dicts, simultaneous requests checking stock and deducting quantities could oversell if multiple worker processes run concurrently. A production database with transactions (`SELECT ... FOR UPDATE` or serializable isolation) is required.
-> 2. **Process Memory State Loss:** Because state is in-memory, server restarts or crashes wipe all order history.
-> 3. **Unpaginated Endpoints:** `GET /orders` and `GET /products` currently return entire lists. At 1,000 orders/day, response payloads would grow unbounded, necessitating cursor or offset pagination.
-
-### Q3: Where did you make an assumption because the requirement was ambiguous — and why?
-> **Answer:** In the revenue definition. The requirement asked for a "simple total revenue figure". I assumed revenue should represent **realized revenue strictly from completed orders**, excluding pending and cancelled orders.
-> 
-> *Rationale:* Since payment processing and partial refunds are explicitly out of scope, counting pending orders would report uncollected revenue on orders that could be cancelled minutes later without penalty. In a production system with payment tracking, this would be split into "Realized Revenue" and "Committed Pipeline Value".
-
-### Q4: If I asked you to add a third role tomorrow (e.g. Store Keeper), how much would you need to change?
-> **Answer:** Minimal changes. Because authorization is encapsulated in `backend/app/deps.py`, adding a `store_keeper` role requires:
-> 1. Adding `"store_keeper"` to the `RoleType` union in `schemas.py`.
-> 2. Adding a dependency in `deps.py` (e.g. `require_stock_access` allowing `manager` and `store_keeper`).
-> 3. Applying that dependency to `POST /products/{id}/stock`.
-> No business logic in other routers or services would need to be rewritten.
-
----
-
-## 6. What Would Be Done Differently With More Time
+## 5. What Would Be Done Differently With More Time
 
 1. **Persistent Database with ACID Transactions:** Replace in-memory dictionaries with PostgreSQL and SQLAlchemy to guarantee transactional atomicity during order creation and stock deduction.
 2. **Production Authentication:** Replace the header-based mock user switcher with JWT bearer tokens and secure HTTP-only cookies.
