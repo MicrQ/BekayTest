@@ -108,10 +108,7 @@ BekayTest/
    $$\text{Pending} \longrightarrow \text{Completed}$$
    $$\text{Pending} \longrightarrow \text{Cancelled}$$
    `Completed` and `Cancelled` are terminal states. Attempting to transition a closed order returns `400 Bad Request`.
-4. **Realized Revenue Calculation:**
-   $$\text{Total Revenue} = \sum_{\text{completed orders}} (\text{quantity} \times \text{unit\_price})$$
-   Pending orders (unfulfilled) and cancelled orders (uncollected/refunded) contribute 0.00 ETB to realized revenue.
-5. **Defense-in-Depth Role Enforcement:**
+4. **Defense-in-Depth Role Enforcement:**
    - **Frontend:** Action buttons (Add Product, Adjust Stock) and the Dashboard link are hidden from Sales staff.
    - **Backend:** Every protected endpoint checks the acting user's role via declarative dependencies (`deps.py`). Unauthorized attempts return `403 Forbidden`.
 
